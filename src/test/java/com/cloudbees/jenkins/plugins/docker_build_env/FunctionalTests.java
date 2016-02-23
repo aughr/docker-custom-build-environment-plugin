@@ -33,14 +33,14 @@ public class FunctionalTests {
         project.getBuildWrappersList().add(
             new DockerBuildWrapper(
                 new PullDockerImageSelector("ubuntu:14.04"),
-                "", new DockerServerEndpoint("", ""), "", true, false, Collections.<Volume>emptyList(), null, "cat", false, "bridge")
+                "", new DockerServerEndpoint("", ""), "", true, false, Collections.<Volume>emptyList(), null, null, "cat", false, "bridge")
         );
         project.getBuildersList().add(new Shell("lsb_release  -a"));
 
         FreeStyleBuild build = project.scheduleBuild2(0).get();
         jenkins.assertBuildStatus(Result.SUCCESS, build);
         String s = FileUtils.readFileToString(build.getLogFile());
-        assertThat(s, containsString("Ubuntu 14.04"));
+        assertThat(s, containsString("Ubuntu 15.04"));
         jenkins.buildAndAssertSuccess(project);
     }
 
@@ -52,7 +52,7 @@ public class FunctionalTests {
         project.getBuildWrappersList().add(
                 new DockerBuildWrapper(
                         new DockerfileImageSelector(".", "$WORKSPACE/Dockerfile"),
-                        "", new DockerServerEndpoint("", ""), "", true, false, Collections.<Volume>emptyList(), null, "cat", false, "bridge")
+                        "", new DockerServerEndpoint("", ""), "", true, false, Collections.<Volume>emptyList(), null, null, "cat", false, "bridge")
         );
         project.getBuildersList().add(new Shell("lsb_release  -a"));
 
